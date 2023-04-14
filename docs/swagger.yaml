@@ -1,0 +1,1899 @@
+definitions:
+  gorm.DeletedAt:
+    properties:
+      time:
+        type: string
+      valid:
+        description: Valid is true if Time is not NULL
+        type: boolean
+    type: object
+  handlers.SignInInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    required:
+    - email
+    - password
+    type: object
+  handlers.SignUpInput:
+    properties:
+      email:
+        type: string
+      isAdmin:
+        type: boolean
+      name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      passwordConfirm:
+        minLength: 8
+        type: string
+      photo:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    - passwordConfirm
+    type: object
+  handlers.createProductRequest:
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      countInStock:
+        type: integer
+      description:
+        type: string
+      image:
+        type: string
+      name:
+        description: UserID      uint   `json:"user_id" validate:"required"`
+        type: string
+      numReviews:
+        type: integer
+      price:
+        type: number
+      rating:
+        description: Reviews      []Review `json:"reviewList"`
+        type: number
+    required:
+    - brand
+    - category
+    - description
+    - name
+    - price
+    type: object
+  handlers.orderItemRequest:
+    properties:
+      image:
+        type: string
+      name:
+        type: string
+      price:
+        type: number
+      product_id:
+        type: integer
+      quantity:
+        type: integer
+    required:
+    - image
+    - name
+    - price
+    - product_id
+    - quantity
+    type: object
+  handlers.orderListResponse:
+    properties:
+      orders:
+        items:
+          $ref: '#/definitions/handlers.orderResponse'
+        type: array
+      ordersCount:
+        type: integer
+    type: object
+  handlers.orderRequest:
+    properties:
+      delivered_at:
+        type: string
+      is_delivered:
+        default: false
+        type: boolean
+      is_paid:
+        type: boolean
+      orderItemList:
+        items:
+          $ref: '#/definitions/handlers.orderItemRequest'
+        type: array
+      paid_at:
+        type: string
+      payment_method:
+        type: string
+      payment_result:
+        allOf:
+        - $ref: '#/definitions/handlers.paymentResultRequest'
+        description: PaymentResultID   uint
+      shipping_price:
+        type: number
+      shippingAddress:
+        allOf:
+        - $ref: '#/definitions/handlers.shippingAddressRequest'
+        description: ShippingAddressID uint
+      tax_price:
+        type: number
+      total_price:
+        type: number
+      user_id:
+        type: integer
+    required:
+    - payment_method
+    - shipping_price
+    - tax_price
+    - total_price
+    - user_id
+    type: object
+  handlers.orderResponse:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      delivered_at:
+        type: string
+      id:
+        type: integer
+      is_delivered:
+        type: boolean
+      is_paid:
+        type: boolean
+      orderItemList:
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      paid_at:
+        type: string
+      payment_method:
+        type: string
+      payment_result_id:
+        type: integer
+      shipping_address_id:
+        type: integer
+      shipping_price:
+        type: number
+      tax_price:
+        type: number
+      total_price:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  handlers.paymentResultRequest:
+    properties:
+      email_address:
+        type: string
+      payment_result_id:
+        type: string
+      status:
+        type: string
+      update_time:
+        type: string
+    required:
+    - email_address
+    - payment_result_id
+    - status
+    - update_time
+    type: object
+  handlers.productListResponse:
+    properties:
+      products:
+        items:
+          $ref: '#/definitions/handlers.productResponse'
+        type: array
+      productsCount:
+        type: integer
+    type: object
+  handlers.productResponse:
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      countInStock:
+        type: integer
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      description:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        description: UserID      uint   `json:"user_id" validate:"required"`
+        type: string
+      numReviews:
+        type: integer
+      price:
+        type: number
+      rating:
+        description: Reviews      []Review
+        type: number
+      updated_at:
+        type: string
+    type: object
+  handlers.reviewListResponse:
+    properties:
+      reviews:
+        items:
+          $ref: '#/definitions/handlers.reviewResponse'
+        type: array
+      reviewsCount:
+        type: integer
+    type: object
+  handlers.reviewRequest:
+    properties:
+      comment:
+        type: string
+      name:
+        type: string
+      product_id:
+        type: integer
+      rating:
+        type: number
+      user_id:
+        type: integer
+    required:
+    - comment
+    - name
+    - rating
+    - user_id
+    type: object
+  handlers.reviewResponse:
+    properties:
+      comment:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      product_id:
+        type: integer
+      product_name:
+        type: string
+      rating:
+        type: number
+      updated_at:
+        type: string
+      user_id:
+        type: integer
+    type: object
+  handlers.shippingAddressRequest:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      postal_code:
+        type: string
+    required:
+    - address
+    - city
+    - country
+    - postal_code
+    type: object
+  handlers.updateProductRequest:
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      countInStock:
+        type: integer
+      description:
+        type: string
+      image:
+        type: string
+      name:
+        description: |-
+          ID          uint   `json:"id" validate:"required"`
+          UserID      uint   `json:"user_id" validate:"required"`
+        type: string
+      numReviews:
+        type: integer
+      price:
+        type: number
+      rating:
+        description: Reviews      []Review `json:"reviewList"`
+        type: number
+    required:
+    - brand
+    - category
+    - description
+    - name
+    - price
+    type: object
+  handlers.updateUserRequest:
+    properties:
+      email:
+        type: string
+      isAdmin:
+        type: boolean
+      name:
+        type: string
+      password:
+        minLength: 8
+        type: string
+      photo:
+        type: string
+      provider:
+        type: string
+      role:
+        type: string
+    required:
+    - email
+    - name
+    - password
+    type: object
+  handlers.userListResponse:
+    properties:
+      users:
+        items:
+          $ref: '#/definitions/handlers.userResponse'
+        type: array
+      usersCount:
+        type: integer
+    type: object
+  handlers.userResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      isAdmin:
+        type: boolean
+      name:
+        type: string
+      photo:
+        type: string
+      provider:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  models.Order:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      deliveredAt:
+        type: string
+      id:
+        type: integer
+      isDelivered:
+        type: boolean
+      isPaid:
+        type: boolean
+      orderItems:
+        description: OrderItems        []OrderItem `gorm:"many2many:order_orderitems;"`
+        items:
+          $ref: '#/definitions/models.OrderItem'
+        type: array
+      paidAt:
+        type: string
+      paymentMethod:
+        type: string
+      paymentResult:
+        $ref: '#/definitions/models.PaymentResult'
+      paymentResultID:
+        type: integer
+      shippingAddress:
+        $ref: '#/definitions/models.ShippingAddress'
+      shippingAddressID:
+        type: integer
+      shippingPrice:
+        type: number
+      taxPrice:
+        type: number
+      totalPrice:
+        type: number
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.OrderItem:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        type: string
+      orderID:
+        type: integer
+      price:
+        type: number
+      product:
+        $ref: '#/definitions/models.Product'
+      productID:
+        type: integer
+      quantity:
+        type: integer
+      updatedAt:
+        type: string
+    type: object
+  models.PaymentResult:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      emailAddress:
+        type: string
+      id:
+        type: integer
+      paymentResID:
+        type: string
+      status:
+        type: string
+      updateTime:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.Product:
+    properties:
+      brand:
+        type: string
+      category:
+        type: string
+      countInStock:
+        type: integer
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      description:
+        type: string
+      id:
+        type: integer
+      image:
+        type: string
+      name:
+        description: |-
+          User         User `gorm:"foreignKey:UserID"`
+          UserID       uint
+        type: string
+      numReviews:
+        type: integer
+      price:
+        type: number
+      rating:
+        type: number
+      reviews:
+        items:
+          $ref: '#/definitions/models.Review'
+        type: array
+      updatedAt:
+        type: string
+    type: object
+  models.Review:
+    properties:
+      comment:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      name:
+        type: string
+      product:
+        $ref: '#/definitions/models.Product'
+      productID:
+        type: integer
+      rating:
+        type: number
+      updatedAt:
+        type: string
+      user:
+        $ref: '#/definitions/models.User'
+      userID:
+        type: integer
+    type: object
+  models.ShippingAddress:
+    properties:
+      address:
+        type: string
+      city:
+        type: string
+      country:
+        type: string
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      id:
+        type: integer
+      postalCode:
+        type: string
+      updatedAt:
+        type: string
+    type: object
+  models.User:
+    properties:
+      createdAt:
+        type: string
+      deletedAt:
+        $ref: '#/definitions/gorm.DeletedAt'
+      email:
+        type: string
+      id:
+        type: integer
+      isAdmin:
+        type: boolean
+      name:
+        type: string
+      orders:
+        items:
+          $ref: '#/definitions/models.Order'
+        type: array
+      password:
+        type: string
+      photo:
+        type: string
+      provider:
+        type: string
+      role:
+        type: string
+      updatedAt:
+        type: string
+      verified:
+        type: boolean
+    type: object
+  models.UserResponse:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      isAdmin:
+        type: boolean
+      name:
+        description: ID        uuid.UUID `json:"id,omitempty"`
+        type: string
+      photo:
+        type: string
+      provider:
+        type: string
+      role:
+        type: string
+      updated_at:
+        type: string
+    type: object
+info:
+  contact:
+    email: contact@owonafx.com
+    name: ESHOP API Support
+  description: GO API ESHOP Docs.
+  license:
+    name: api-eshop 2.0
+  termsOfService: http://swagger.io/terms/
+  title: GO API ESHOP
+  version: "1.0"
+paths:
+  /api/v1/auth/login:
+    post:
+      consumes:
+      - application/json
+      description: Signin/Login  a user to the API.
+      parameters:
+      - description: Sign In Input
+        in: body
+        name: signInput
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignInInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: answer
+          schema:
+            type: string
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      summary: login a user to the API.
+      tags:
+      - User
+  /api/v1/auth/logout:
+    get:
+      consumes:
+      - application/json
+      description: Logout  of the the API.
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Logout  of the the API.
+      tags:
+      - User
+  /api/v1/auth/products:
+    post:
+      consumes:
+      - application/json
+      description: CreateProduct create a new Product
+      operationId: create-product
+      parameters:
+      - description: ProductRequest
+        in: body
+        name: ProductRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.createProductRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.productResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create a new Product
+      tags:
+      - Product
+  /api/v1/auth/products/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Product. Auth is required
+      operationId: delete-product
+      parameters:
+      - description: Id of the product to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a Product
+      tags:
+      - Product
+    get:
+      consumes:
+      - application/json
+      description: Get a product. Auth required
+      operationId: get-product
+      parameters:
+      - description: Id of the product to get
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get a product
+      tags:
+      - Product
+    put:
+      consumes:
+      - application/json
+      description: Update a Product. Auth is required
+      operationId: update-product
+      parameters:
+      - description: Id of the product to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Product to update
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.updateProductRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a new Product
+      tags:
+      - Product
+  /api/v1/auth/products/all/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Display all Products. Auth is required
+      operationId: all-products
+      parameters:
+      - description: Limit number of products returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of products (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display all Products
+      tags:
+      - Product
+  /api/v1/auth/products/top/{limit}:
+    get:
+      consumes:
+      - application/json
+      description: Display top Products. Auth is required
+      operationId: top-products
+      parameters:
+      - description: Limit number of products returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display top Products
+      tags:
+      - Product
+  /api/v1/auth/refresh:
+    get:
+      consumes:
+      - application/json
+      description: refresh the current TOKEN.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: success
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: refresh the current TOKEN
+      tags:
+      - User
+  /api/v1/auth/register:
+    post:
+      consumes:
+      - application/json
+      description: Signup/Register a new user.
+      parameters:
+      - description: SignInput
+        in: body
+        name: signInput
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.SignUpInput'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.UserResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      summary: create a new user
+      tags:
+      - User
+  /api/v1/auth/reviews/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a Review. Auth is required
+      operationId: delete-review
+      parameters:
+      - description: Id of the review to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: product deleted
+          schema:
+            type: string
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a Review
+      tags:
+      - Review
+    get:
+      consumes:
+      - application/json
+      description: Get a review. Auth required
+      operationId: get-review
+      parameters:
+      - description: Id of the review to get
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.reviewResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get a review
+      tags:
+      - Review
+    put:
+      consumes:
+      - application/json
+      description: Update a review. Auth is required
+      operationId: update-review
+      parameters:
+      - description: Id of the review to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Review to update
+        in: body
+        name: product
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.reviewRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.reviewResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a review
+      tags:
+      - Review
+  /api/v1/auth/reviews/{product_id}:
+    post:
+      consumes:
+      - application/json
+      description: CreateReview create a new Product Review
+      operationId: create-review
+      parameters:
+      - description: Id of the product to get
+        in: path
+        name: product_id
+        required: true
+        type: string
+      - description: Review Request
+        in: body
+        name: ReviewRequest
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.reviewRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.reviewResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create a new Product Review
+      tags:
+      - Review
+  /api/v1/auth/reviews/{productName}/product/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Display all Reviews By Product Id. Auth is required
+      operationId: all-products-reviews
+      parameters:
+      - description: Name of the product for reviews
+        in: path
+        name: productName
+        required: true
+        type: string
+      - description: Limit number of products returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of products (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.reviewListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display all Reviews By Product Id
+      tags:
+      - Review
+  /api/v1/auth/users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a User. Auth is required
+      operationId: delete-user
+      parameters:
+      - description: Id of the user to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.userResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete a User
+      tags:
+      - User
+  /api/v1/auth/users/all/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Display all Users. Auth is required
+      operationId: all-users
+      parameters:
+      - description: Limit number of products returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of products (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.userListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display all Users
+      tags:
+      - User
+  /api/v1/orders:
+    post:
+      consumes:
+      - application/json
+      description: CreateOrder create a new Order
+      operationId: create-order
+      parameters:
+      - description: orderRequest
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.orderRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: create a new Order
+      tags:
+      - Order
+  /api/v1/orders/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an Order. Auth is required
+      operationId: delete-order
+      parameters:
+      - description: Id of the order to delete
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Delete an Order
+      tags:
+      - Order
+    get:
+      consumes:
+      - application/json
+      description: Get an order. Auth required
+      operationId: get-order
+      parameters:
+      - description: Id of the order to get
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get an order
+      tags:
+      - Order
+    put:
+      consumes:
+      - application/json
+      description: Update a Order. Auth is required
+      operationId: update-order
+      parameters:
+      - description: Id of the order to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Order to update
+        in: body
+        name: order
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.orderRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a new Order
+      tags:
+      - Order
+  /api/v1/orders/{userId}/user/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Display all user Orders. Auth is required
+      operationId: all-user-orders
+      parameters:
+      - description: userId of the order to get
+        in: path
+        name: userId
+        required: true
+        type: string
+      - description: Limit number of orders returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of orders (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display all user Orders
+      tags:
+      - Order
+  /api/v1/orders/all/{limit}/{offset}:
+    get:
+      consumes:
+      - application/json
+      description: Display all Orders. Auth is required
+      operationId: all-orders
+      parameters:
+      - description: Limit number of orders returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of orders (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Display all Orders
+      tags:
+      - Order
+  /api/v1/orders/delivered/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an Order To Delivered. Auth is required
+      operationId: update-order-to-delivered
+      parameters:
+      - description: Id of the order to update to delivered
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a new Order to Delivered
+      tags:
+      - Order
+  /api/v1/orders/paid/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update an Order To Paid. Auth is required
+      operationId: update-order-to-paid
+      parameters:
+      - description: Id of the order to update to paid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.orderResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a new Order to Paid
+      tags:
+      - Order
+  /api/v1/users/{email}:
+    get:
+      consumes:
+      - application/json
+      description: Get a user. Auth required
+      operationId: get-user
+      parameters:
+      - description: Email of the user to get
+        in: path
+        name: email
+        required: true
+        type: string
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.userResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Get a user
+      tags:
+      - User
+  /api/v1/users/{id}:
+    put:
+      consumes:
+      - application/json
+      description: Update a User. Auth is required
+      operationId: update-user
+      parameters:
+      - description: Id of the user to update
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: User to update
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/handlers.updateUserRequest'
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.userResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "403":
+          description: Status Forbidden
+          schema:
+            type: string
+        "404":
+          description: Status Not Found
+          schema:
+            type: string
+        "409":
+          description: Status Conflict
+          schema:
+            type: string
+        "422":
+          description: Status UnprocessableEntity
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      security:
+      - ApiKeyAuth: []
+      summary: Update a user
+      tags:
+      - User
+  /api/v1/users/me:
+    get:
+      consumes:
+      - application/json
+      description: Get current user.
+      parameters:
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Logout  of the the API.
+      tags:
+      - User
+produces:
+- application/json
+schemes:
+- http
+- https
+securityDefinitions:
+  ApiKeyAuth:
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"
