@@ -210,74 +210,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/auth/products/all/{limit}/{offset}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Display all Products. Auth is required",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Product"
-                ],
-                "summary": "Display all Products",
-                "operationId": "all-products",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Limit number of products returned (default is 20)",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Offset/Skip number of products (default is 0)",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.productListResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Status BadRequest",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Status Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "502": {
-                        "description": "Status BadGateway",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/auth/products/top/{limit}": {
             "get": {
                 "security": [
@@ -1051,74 +983,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/auth/users/all/{limit}/{offset}": {
-            "get": {
-                "security": [
-                    {
-                        "ApiKeyAuth": []
-                    }
-                ],
-                "description": "Display all Users. Auth is required",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "Display all Users",
-                "operationId": "all-users",
-                "parameters": [
-                    {
-                        "type": "integer",
-                        "description": "Limit number of products returned (default is 20)",
-                        "name": "limit",
-                        "in": "query"
-                    },
-                    {
-                        "type": "integer",
-                        "description": "Offset/Skip number of products (default is 0)",
-                        "name": "offset",
-                        "in": "query"
-                    },
-                    {
-                        "type": "string",
-                        "description": "Authentication header",
-                        "name": "Authorization",
-                        "in": "header",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/handlers.userListResponse"
-                        }
-                    },
-                    "400": {
-                        "description": "Status BadRequest",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "500": {
-                        "description": "Status Internal Server Error",
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    "502": {
-                        "description": "Status BadGateway",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
         "/api/v1/auth/users/{id}": {
             "delete": {
                 "security": [
@@ -1187,6 +1051,74 @@ const docTemplate = `{
                     },
                     "422": {
                         "description": "Status UnprocessableEntity",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "502": {
+                        "description": "Status BadGateway",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/users/{limit}/{offset}": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Display all Users. Auth is required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "Display all Users",
+                "operationId": "all-users",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit number of products returned (default is 20)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset/Skip number of products (default is 0)",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.userListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Status BadRequest",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Status Internal Server Error",
                         "schema": {
                             "type": "string"
                         }
@@ -1783,6 +1715,69 @@ const docTemplate = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/handlers.orderListResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Status BadRequest",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Status Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "502": {
+                        "description": "Status BadGateway",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/products/all": {
+            "get": {
+                "description": "Display all Products. Auth is not required",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Product"
+                ],
+                "summary": "Display all Products",
+                "operationId": "all-products",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "Limit number of products returned (default is 20)",
+                        "name": "limit",
+                        "in": "query"
+                    },
+                    {
+                        "type": "integer",
+                        "description": "Offset/Skip number of products (default is 0)",
+                        "name": "offset",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "Authentication header",
+                        "name": "Authorization",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handlers.productListResponse"
                         }
                     },
                     "400": {

@@ -876,50 +876,6 @@ paths:
       summary: Update a new Product
       tags:
       - Product
-  /api/v1/auth/products/all/{limit}/{offset}:
-    get:
-      consumes:
-      - application/json
-      description: Display all Products. Auth is required
-      operationId: all-products
-      parameters:
-      - description: Limit number of products returned (default is 20)
-        in: query
-        name: limit
-        type: integer
-      - description: Offset/Skip number of products (default is 0)
-        in: query
-        name: offset
-        type: integer
-      - description: Authentication header
-        in: header
-        name: Authorization
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/handlers.productListResponse'
-        "400":
-          description: Status BadRequest
-          schema:
-            type: string
-        "500":
-          description: Status Internal Server Error
-          schema:
-            type: string
-        "502":
-          description: Status BadGateway
-          schema:
-            type: string
-      security:
-      - ApiKeyAuth: []
-      summary: Display all Products
-      tags:
-      - Product
   /api/v1/auth/products/top/{limit}:
     get:
       consumes:
@@ -1331,7 +1287,7 @@ paths:
       summary: Delete a User
       tags:
       - User
-  /api/v1/auth/users/all/{limit}/{offset}:
+  /api/v1/auth/users/{limit}/{offset}:
     get:
       consumes:
       - application/json
@@ -1771,6 +1727,48 @@ paths:
       summary: Update a new Order to Paid
       tags:
       - Order
+  /api/v1/products/all:
+    get:
+      consumes:
+      - application/json
+      description: Display all Products. Auth is not required
+      operationId: all-products
+      parameters:
+      - description: Limit number of products returned (default is 20)
+        in: query
+        name: limit
+        type: integer
+      - description: Offset/Skip number of products (default is 0)
+        in: query
+        name: offset
+        type: integer
+      - description: Authentication header
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handlers.productListResponse'
+        "400":
+          description: Status BadRequest
+          schema:
+            type: string
+        "500":
+          description: Status Internal Server Error
+          schema:
+            type: string
+        "502":
+          description: Status BadGateway
+          schema:
+            type: string
+      summary: Display all Products
+      tags:
+      - Product
   /api/v1/users/{email}:
     get:
       consumes:

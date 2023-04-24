@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"net/http"
 	"strconv"
 
@@ -167,7 +168,7 @@ func (h *Handler) DeleteProduct(c *fiber.Ctx) error {
 
 // AllProducts func to display all Products
 // @Summary Display all Products
-// @Description Display all Products. Auth is required
+// @Description Display all Products. Auth is not required
 // @ID all-products
 // @Tags Product
 // @Accept  json
@@ -179,13 +180,13 @@ func (h *Handler) DeleteProduct(c *fiber.Ctx) error {
 // @Failure		400				{string}	string	"Status BadRequest"
 // @Failure		500				{string}	string	"Status Internal Server Error"
 // @Failure		502				{string}	string	"Status BadGateway"
-// @Security ApiKeyAuth
-// @Router /api/v1/auth/products/all/{limit}/{offset} [get]
+// @Router /api/v1/products/all [get]
 func (h *Handler) AllProducts(c *fiber.Ctx) error {
 	var (
 		products []models.Product
 		count    int64
 	)
+
 	offset, err := strconv.Atoi(c.Params("offset"))
 	if err != nil {
 		offset = 0
@@ -195,11 +196,13 @@ func (h *Handler) AllProducts(c *fiber.Ctx) error {
 	if err != nil {
 		limit = 20
 	}
-
+	// offset := 0
+	// limit := 20
 	products, count, err = h.productRepository.GetAllProducts(offset, limit)
 
 	if err != nil {
-		return c.Status(http.StatusInternalServerError).JSON(utils.NewError(err))
+		fmt.Println("********** Print All Product error ", err)
+		// return c.Status(http.StatusInternalServerError).JSON(utils.NewError(err))
 	}
 	return c.Status(http.StatusOK).JSON(newProductListResponse(products, count))
 }

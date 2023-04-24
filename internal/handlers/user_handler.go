@@ -159,7 +159,7 @@ func (h *Handler) DeleteUser(c *fiber.Ctx) error {
 // @Failure		500				{string}	string	"Status Internal Server Error"
 // @Failure		502				{string}	string	"Status BadGateway"
 // @Security ApiKeyAuth
-// @Router /api/v1/auth/users/all/{limit}/{offset} [get]
+// @Router /api/v1/auth/users/{limit}/{offset} [get]
 func (h *Handler) AllUsers(c *fiber.Ctx) error {
 	var (
 		users []models.User
@@ -180,5 +180,6 @@ func (h *Handler) AllUsers(c *fiber.Ctx) error {
 	if err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(utils.NewError(err))
 	}
+
 	return c.Status(http.StatusOK).JSON(newUserListResponse(users, count))
 }

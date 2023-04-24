@@ -48,24 +48,24 @@ func (h *Handler) NewRoutes(config *config.Config, swagg swagger.Config) *fiber.
 	grpUsers.Get("/refresh", h.RefreshAccessToken) // /api/v1/auth/refresh
 	// Protected users routes
 	grpUsers.Get("/logout", middleware.DeserializeUser, h.LogoutUser) // /api/v1/auth/logout
-	//grpUsers.Get("/users/me", middleware.DeserializeUser, h.GetMe)    // /api/v1/auth/users/me
 
 	// user management secure
-	usersGrp := v1.Group("/users")                                                // /api/v1/users
-	usersGrp.Get("/me", middleware.DeserializeUser, h.GetMe)                      // /api/v1/users/me
-	usersGrp.Put("/:id", middleware.DeserializeUser, h.UpdateUser)                // /api/v1/users/:id [put]
-	usersGrp.Delete("/:id", middleware.DeserializeUser, h.DeleteUser)             // /api/v1/users/:id [delete]
-	usersGrp.Get("/:email", middleware.DeserializeUser, h.GetUserByEmail)         // /api/v1/users/:email [get]
-	usersGrp.Get("/all/:limit?/:offset?", middleware.DeserializeUser, h.AllUsers) // /api/v1/users/top/:limit?/:offset? [get]
+	usersGrp := v1.Group("/users")                                            // /api/v1/users
+	usersGrp.Get("/me", middleware.DeserializeUser, h.GetMe)                  // /api/v1/users/me
+	usersGrp.Put("/:id", middleware.DeserializeUser, h.UpdateUser)            // /api/v1/users/:id [put]
+	usersGrp.Delete("/:id", middleware.DeserializeUser, h.DeleteUser)         // /api/v1/users/:id [delete]
+	usersGrp.Get("/:email", middleware.DeserializeUser, h.GetUserByEmail)     // /api/v1/users/:email [get]
+	usersGrp.Get("/:limit?/:offset?", middleware.DeserializeUser, h.AllUsers) // /api/v1/users/:limit?/:offset? [get]
+	// usersGrp.Get("/:limit?/:offset?", h.AllUsers) // /api/v1/users/:limit?/:offset? [get]
 
 	// products management protected
-	products := v1.Group("/products")                                                // /api/v1/products
-	products.Post("", middleware.DeserializeUser, h.CreateProduct)                   // /api/v1/products [post]
-	products.Put("/:id", middleware.DeserializeUser, h.UpdateProduct)                // /api/v1/products/:id [put]
-	products.Delete("/:id", middleware.DeserializeUser, h.DeleteProduct)             // /api/v1/products/:id [delete]
-	products.Get("/:id", middleware.DeserializeUser, h.GetProduct)                   // /api/v1/products/:id [get]
-	products.Get("/all/:limit?/:offset?", middleware.DeserializeUser, h.AllProducts) // /api/v1/products/all/:limit?/:offset? [get]
-	products.Get("/top/:limit?", middleware.DeserializeUser, h.TopProducts)          // /api/v1/products/top/:limit?/:offset? [get]
+	products := v1.Group("/products")                                    // /api/v1/products
+	products.Post("", middleware.DeserializeUser, h.CreateProduct)       // /api/v1/products [post]
+	products.Put("/:id", middleware.DeserializeUser, h.UpdateProduct)    // /api/v1/products/:id [put]
+	products.Delete("/:id", middleware.DeserializeUser, h.DeleteProduct) // /api/v1/products/:id [delete]
+	products.Get("/:id", h.GetProduct)                                   // /api/v1/products/:id [get]
+	products.Get("/:limit?/:offset?", h.AllProducts)                     // /api/v1/products/:limit?/:offset? [get]
+	products.Get("/top/:limit?", h.TopProducts)                          // /api/v1/products/top/:limit?/:offset? [get]
 
 	// products review protected
 	reviews := v1.Group("/reviews")
@@ -83,7 +83,7 @@ func (h *Handler) NewRoutes(config *config.Config, swagg swagger.Config) *fiber.
 	orders.Put("/delivered/:id", middleware.DeserializeUser, h.UpdateOrderToDelivered)        // /api/v1/orders/delivered/:id [put]
 	orders.Delete("/:id", middleware.DeserializeUser, h.DeleteOrder)                          // /api/v1/orders/:id [delete]
 	orders.Get("/:id", middleware.DeserializeUser, h.GetOrderById)                            // /api/v1/orders/:id [get]
-	orders.Get("/all/:limit?/:offset?", middleware.DeserializeUser, h.AllOrders)              // /api/v1/orders/all/:limit?/:offset? [get]
+	orders.Get("/:limit?/:offset?", middleware.DeserializeUser, h.AllOrders)                  // /api/v1/orders/all/:limit?/:offset? [get]
 	orders.Get("/:userId/user/:limit?/:offset?", middleware.DeserializeUser, h.AllUserOrders) // /api/v1/orders/:userId/user/:limit?/:offset? [get]
 
 	// Close Other Routes

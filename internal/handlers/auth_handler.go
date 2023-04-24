@@ -167,7 +167,12 @@ func (h *Handler) SignInUser(c *fiber.Ctx) error {
 		Domain:   "localhost",
 	})
 
-	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "access_token": accessTokenDetails.Token})
+	userRoles := []string{}
+	userRoles = append(userRoles, "customer")
+	if user.IsAdmin {
+		userRoles = append(userRoles, "admin")
+	}
+	return c.Status(fiber.StatusOK).JSON(fiber.Map{"status": "success", "access_token": accessTokenDetails.Token, "user": models.FilterUserRecord(user), "roles": userRoles})
 }
 
 // RefreshAccessToken func to refresh the current TOKEN
@@ -288,7 +293,6 @@ func (h *Handler) LogoutUser(c *fiber.Ctx) error {
 	access_token_uuid := c.Locals("access_token_uuid").(string)
 	_, err = initializers.RedisClient.Del(ctx, tokenClaims.TokenUuid, access_token_uuid).Result()
 	if err != nil {
-		// return c.Status(fiber.StatusBadGateway).JSON(fiber.Map{"status": "fail", "message": err.Error()})
 		return c.Status(fiber.StatusBadGateway).JSON(utils.NewError(err))
 	}
 

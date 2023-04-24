@@ -45,7 +45,6 @@ func main() {
 		os.Exit(exitCode)
 	}()
 	rootPath := "."
-
 	// Init All Databases
 	initializers.LoadDatabases(rootPath)
 	// load config
@@ -55,9 +54,11 @@ func main() {
 		exitCode = 1
 		return
 	}
+	// Init All Handlers
+	h := initApp(env)
 
 	// run the server
-	cleanup, err := run(env, swagg)
+	cleanup, err := run(env, swagg, h)
 	// run the cleanup after the server is terminated
 	defer cleanup()
 	if err != nil {
@@ -70,9 +71,9 @@ func main() {
 
 }
 
-func run(env config.Config, swagg swagger.Config) (func(), error) {
+func run(env config.Config, swagg swagger.Config, h *handlers.Handler) (func(), error) {
 
-	h := initApp(env)
+	// h := initApp(env)
 	app := h.NewRoutes(&env, swagg)
 
 	// start the server
