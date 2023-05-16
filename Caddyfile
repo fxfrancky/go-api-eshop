@@ -5,7 +5,7 @@
 }
 
 
-goapi-eshop.com {
+goapi-eshop.shop {
     reverse_proxy  go-api-eshop-api:8000
 
     # root * /srv
