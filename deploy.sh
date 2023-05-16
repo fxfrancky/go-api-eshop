@@ -17,7 +17,7 @@ chmod +x swagg.sh
 echo "Api documentation successfully generated"
 
 echo "Building and deploying the entire application"
-docker-compose up
+docker-compose up -d
 
 echo "Our app is successfully deployed"
 
