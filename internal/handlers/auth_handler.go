@@ -28,6 +28,7 @@ import (
 // @Failure		403				{string}	string	"Status Forbidden"
 // @Failure		409				{string}	string	"Status Conflict"
 // @Failure		502				{string}	string	"Status BadGateway"
+// @Security ApiKeyAuth
 // @Router /api/v1/auth/register [post]
 func (h *Handler) SignUpUser(c *fiber.Ctx) error {
 	var payload *SignUpInput
