@@ -1,0 +1,19 @@
+{
+    email   contact@owonafx.com
+    debug
+
+}
+
+
+goapi-eshop.com {
+    reverse_proxy  go-api-eshop-api:8000
+
+    # root * /srv
+    encode zstd gzip
+    file_server
+}
+
+# db.place2connect.com {
+#     reverse_proxy postgres:5432
+# }
+

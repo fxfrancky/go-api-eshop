@@ -95,65 +95,6 @@ func (h *Handler) NewRoutes(config *config.Config, swagg swagger.Config) *fiber.
 		})
 	})
 
-	// 	router.Post("/products", middleware.DeserializeUser, h.CreateProduct)
-	// 	router.Put("/products", middleware.DeserializeUser, h.UpdateProduct)
-
-	// 	router.Post("/register", h.SignUpUser)
-	// 	router.Post("/login", h.SignInUser)
-	// 	router.Get("/logout", middleware.DeserializeUser, h.LogoutUser)
-	// 	router.Get("/refresh", h.RefreshAccessToken)
-
-	// app := fiber.New()
-	// micro := fiber.New()
-	// app.Use(recover.New())
-	// app.Mount(apiPath, micro)
-	// app.Use(logger.New())
-
-	// // Enable Cors
-	// app = middleware.EnableCors(app)
-	// // add docs
-	// app.Get("/swagger/*", swagger.HandlerDefault)
-	// app.Get("/swagger/*", swagger.New(swagg))
-	// // micro.Use(recover.New())
-	// // micro.Use(csrf.New())
-	// // /api/auth/register
-	// micro.Route("/auth", func(router fiber.Router) {
-	// 	// User routes
-	// 	router.Post("/register", h.SignUpUser)
-	// 	router.Post("/login", h.SignInUser)
-	// 	router.Get("/logout", middleware.DeserializeUser, h.LogoutUser)
-	// 	router.Get("/refresh", h.RefreshAccessToken)
-	// 	// Product routes
-	// 	router.Post("/products", middleware.DeserializeUser, h.CreateProduct)
-	// 	router.Put("/products", middleware.DeserializeUser, h.UpdateProduct)
-	// })
-
-	// micro.Get("/users/me", middleware.DeserializeUser, h.GetMe)
-
-	// ctx := context.TODO()
-	// value, err := initializers.RedisClient.Get(ctx, "test").Result()
-
-	// if err == redis.Nil {
-	// 	fmt.Println("key: test does not exist")
-	// } else if err != nil {
-	// 	panic(err)
-	// }
-
-	// micro.Get("/healthchecker", func(c *fiber.Ctx) error {
-	// 	return c.Status(fiber.StatusOK).JSON(fiber.Map{
-	// 		"status":  "success",
-	// 		"message": value,
-	// 	})
-	// })
-
-	// micro.All("*", func(c *fiber.Ctx) error {
-	// 	path := c.Path()
-	// 	return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-	// 		"status":  "fail",
-	// 		"message": fmt.Sprintf("Path: %v does not exists on this server", path),
-	// 	})
-	// })
-
 	return app
 
 }
