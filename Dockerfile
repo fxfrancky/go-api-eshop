@@ -6,6 +6,7 @@ WORKDIR /app
 COPY wait-for.sh .
 COPY app.env .
 COPY . .
+RUN go mod init
 RUN go mod download
 RUN go mod tidy
 
