@@ -6,6 +6,8 @@ WORKDIR /app
 COPY wait-for.sh .
 COPY app.env .
 COPY . .
+RUN go mod download
+RUN go mod tidy
 
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 GOAMD64=v3 go build  -v -a -installsuffix cgo -o ./main -tags timetzdata -trimpath cmd/http/main.go
 
