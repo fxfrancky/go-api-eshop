@@ -8,11 +8,11 @@ echo "Enabling swag"
 cd /usr/local/go/bin/
 PATH=$(go env GOPATH)/bin:$PATH
 swag -v
-cd /var/www/
+cd /var/www/go-api-eshop
 
 echo "Generate documentation from place2connect-api"
 
-chmod +x ./swagg.sh
+chmod +x swagg.sh
 ./swagg.sh
 echo "Api documentation successfully generated"
 
