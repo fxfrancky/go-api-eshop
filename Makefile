@@ -26,3 +26,5 @@ install-modules:
 	go get github.com/gofiber/swagger
 	go get github.com/gofiber/fiber/v2/middleware/csrf
 	go get -u github.com/shopspring/decimal
+	go get github.com/fsnotify/fsnotify
+	go get github.com/labstack/gommon/log

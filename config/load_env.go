@@ -1,8 +1,11 @@
 package config
 
 import (
+	"sync"
 	"time"
 
+	"github.com/fsnotify/fsnotify"
+	"github.com/labstack/gommon/log"
 	"github.com/spf13/viper"
 )
 
@@ -11,11 +14,13 @@ type Config struct {
 	DBUserName     string `mapstructure:"POSTGRES_USER"`
 	DBUserPassword string `mapstructure:"POSTGRES_PASSWORD"`
 	DBName         string `mapstructure:"POSTGRES_DB"`
-	DBPort         string `mapstructure:"POSTGRES_PORT"`
+	DBPort         int    `mapstructure:"POSTGRES_PORT"`
+	DBUrl          string `mapstructure:"DATABASE_URL"`
 	ServerPort     string `mapstructure:"API_PORT"`
 	APIVersion     string `mapstructure:"API_VERSION"`
 
 	ClientOrigin string `mapstructure:"CLIENT_ORIGIN"`
+	ApiURL       string `mapstructure:"API_URL"`
 	RedisUri     string `mapstructure:"REDIS_URL"`
 
 	AccessTokenPrivateKey  string        `mapstructure:"ACCESS_TOKEN_PRIVATE_KEY"`
@@ -30,20 +35,53 @@ type Config struct {
 	StripeSecret string `mapstructure:"STRIPE_SECRET"`
 	StripeKey    string `mapstructure:"STRIPE_KEY"`
 	StripeApi    string `mapstructure:"STRIPE_API"`
+
+	SmtpHost     string `mapstructure:"SMTP_HOST"`
+	SmtpPassword string `mapstructure:"SMTP_PASSWORD"`
+	SmtpPort     string `mapstructure:"SMTP_PORT"`
+	SmtpUser     string `mapstructure:"SMTP_USER"`
 }
 
-func LoadConfig(path string) (config Config, err error) {
-	viper.AddConfigPath(path)
-	viper.SetConfigType("env")
-	viper.SetConfigName("app")
+var (
+	config      *Config
+	configError error
+	once        sync.Once
+)
 
-	viper.AutomaticEnv()
+const (
+	ConfigDefaultName = "app.env"
+)
 
-	err = viper.ReadInConfig()
-	if err != nil {
-		return
-	}
+func LoadConfig(filepath string) (*Config, error) {
+	once.Do(func() {
 
-	err = viper.Unmarshal(&config)
-	return
+		viper.SetConfigFile(filepath)
+		viper.AutomaticEnv()
+
+		configError = viper.ReadInConfig()
+		if configError != nil {
+			log.Error("Error to read configs: ", configError)
+			return
+		}
+
+		config = &Config{}
+		configError = viper.Unmarshal(config)
+		if configError != nil {
+			log.Error("Error to unmarshal configs: ", configError)
+			return
+		}
+
+		viper.WatchConfig()
+		viper.OnConfigChange(func(in fsnotify.Event) {
+			if in.Op == fsnotify.Write {
+				err := viper.Unmarshal(config)
+				if err != nil {
+					log.Error("Error to unmarshal new config changes: ", err)
+					return
+				}
+			}
+		})
+	})
+
+	return config, configError
 }

@@ -14,6 +14,7 @@ import (
 	userRepo "github.com/fxfrancky/go-api-eshop/internal/repository/user"
 	"github.com/fxfrancky/go-api-eshop/pkg/shutdown"
 	"github.com/gofiber/swagger"
+	"gorm.io/gorm"
 )
 
 // @title GO API ESHOP
@@ -44,18 +45,20 @@ func main() {
 	defer func() {
 		os.Exit(exitCode)
 	}()
-	rootPath := "."
+
 	// Init All Databases
-	initializers.LoadDatabases(rootPath)
-	// load config
-	env, err := config.LoadConfig(rootPath)
+	env, err := config.LoadConfig(config.ConfigDefaultName)
 	if err != nil {
 		fmt.Printf("error: %v", err)
 		exitCode = 1
 		return
 	}
+	// Init All Databases
+	postgresDB := initializers.LoadDatabases(env)
+	// load config
+
 	// Init All Handlers
-	h := initApp(env)
+	h := initApp(env, postgresDB)
 
 	// run the server
 	cleanup, err := run(env, swagg, h)
@@ -71,10 +74,10 @@ func main() {
 
 }
 
-func run(env config.Config, swagg swagger.Config, h *handlers.Handler) (func(), error) {
+func run(env *config.Config, swagg swagger.Config, h *handlers.Handler) (func(), error) {
 
 	// h := initApp(env)
-	app := h.NewRoutes(&env, swagg)
+	app := h.NewRoutes(env, swagg)
 
 	// start the server
 	go func() {
@@ -88,11 +91,10 @@ func run(env config.Config, swagg swagger.Config, h *handlers.Handler) (func(), 
 	}, nil
 }
 
-func initApp(env config.Config) *handlers.Handler {
-	db := initializers.ConnectDB(&env)
-	productRepo := productRepo.NewProductRepositoryImpl(db)
-	orderRepo := orderRepo.NewOrderRepositoryImpl(db)
-	userRepo := userRepo.NewUserRepositoryImpl(db)
+func initApp(env *config.Config, postgresDB *gorm.DB) *handlers.Handler {
+	productRepo := productRepo.NewProductRepositoryImpl(postgresDB)
+	orderRepo := orderRepo.NewOrderRepositoryImpl(postgresDB)
+	userRepo := userRepo.NewUserRepositoryImpl(postgresDB)
 	h := handlers.NewHandler(productRepo, orderRepo, userRepo)
 	return h
 }

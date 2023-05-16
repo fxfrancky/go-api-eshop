@@ -1,17 +1,14 @@
 package initializers
 
 import (
-	"log"
-
 	"github.com/fxfrancky/go-api-eshop/config"
+	"gorm.io/gorm"
 )
 
-func LoadDatabases(path string) {
-	conf, err := config.LoadConfig(path)
-	if err != nil {
-		log.Fatalln("Failed to load environment variables! \n", err.Error())
-	}
+func LoadDatabases(conf *config.Config) *gorm.DB {
 
-	ConnectRedis(&conf)
-	ConnectDB(&conf)
+	db := ConnectDB(conf)
+	ConnectRedis(conf)
+
+	return db
 }

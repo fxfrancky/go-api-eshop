@@ -6,7 +6,7 @@
 
 
 goapi-eshop.shop {
-    reverse_proxy  go-api-eshop-api:8000
+    reverse_proxy go-api-eshop-api:8000
 
     # root * /srv
     encode zstd gzip
